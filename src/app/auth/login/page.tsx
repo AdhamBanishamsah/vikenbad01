@@ -28,7 +28,16 @@ const LoginPage = () => {
       if (result?.error) {
         setError("Invalid email or password")
       } else if (result?.ok) {
-        router.push("/dashboard")
+        // Get the user role from the email (temporary solution)
+        const email = formData.get("email") as string
+        const isAdmin = email === "admin@viken.com"
+        
+        // Redirect based on role
+        if (isAdmin) {
+          router.push("/admin/dashboard")
+        } else {
+          router.push("/user/dashboard")
+        }
         router.refresh()
       }
     } catch (error) {

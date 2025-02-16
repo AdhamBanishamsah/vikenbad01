@@ -12,11 +12,22 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         try {
-          if (credentials?.email === "adham.nidam@gmail.com" && credentials?.password === "Password123!!") {
+          // Admin user
+          if (credentials?.email === "admin@viken.com" && credentials?.password === "Admin123!!") {
             return {
               id: "1",
+              name: "Admin User",
+              email: credentials.email,
+              role: "admin"
+            }
+          }
+          // Regular user
+          if (credentials?.email === "adham.nidam@gmail.com" && credentials?.password === "Password123!!") {
+            return {
+              id: "2",
               name: "Test User",
-              email: credentials.email
+              email: credentials.email,
+              role: "user"
             }
           }
           return null
@@ -27,6 +38,20 @@ const handler = NextAuth({
       }
     })
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.role = token.role
+      }
+      return session
+    }
+  },
   pages: {
     signIn: '/auth/login',
     error: '/auth/error'
