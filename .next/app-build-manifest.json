@@ -36,6 +36,31 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(dashboards)/admin/dashboard/page.js"
     ],
+    "/(dashboards)/admin/projects/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboards)/admin/projects/page.js"
+    ],
+    "/(dashboards)/admin/projects/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboards)/admin/projects/[id]/page.js"
+    ],
+    "/(dashboards)/admin/users/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboards)/admin/users/page.js"
+    ],
+    "/(dashboards)/user/time-register/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboards)/user/time-register/page.js"
+    ],
+    "/(dashboards)/user/my-log/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboards)/user/my-log/page.js"
+    ],
     "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
