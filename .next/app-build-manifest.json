@@ -35,66 +35,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/time-logs/all/route.js"
-    ],
-    "/api/reports/generate/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/reports/generate/route.js"
-    ],
-    "/(dashboards)/admin/users/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboards)/admin/users/page.js"
-    ],
-    "/(dashboards)/admin/projects/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboards)/admin/projects/page.js"
-    ],
-    "/(dashboards)/admin/projects/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboards)/admin/projects/[id]/page.js"
-    ],
-    "/api/projects/[id]/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/projects/[id]/route.js"
-    ],
-    "/api/projects/active/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/projects/active/route.js"
-    ],
-    "/api/time-logs/user/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/time-logs/user/route.js"
-    ],
-    "/(dashboards)/user/my-log/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboards)/user/my-log/page.js"
-    ],
-    "/api/time-logs/lock/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/time-logs/lock/route.js"
-    ],
-    "/auth/login/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/auth/login/page.js"
-    ],
-    "/(dashboards)/user/time-register/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboards)/user/time-register/page.js"
-    ],
-    "/(dashboards)/user/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboards)/user/dashboard/page.js"
     ]
   }
 }

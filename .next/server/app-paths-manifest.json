@@ -1,14 +1,8 @@
 {
-  "/api/users/route": "app/api/users/route.js",
-  "/api/projects/route": "app/api/projects/route.js",
-  "/api/time-logs/all/route": "app/api/time-logs/all/route.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/(dashboards)/admin/dashboard/page": "app/(dashboards)/admin/dashboard/page.js",
-  "/(dashboards)/admin/projects/[id]/page": "app/(dashboards)/admin/projects/[id]/page.js",
-  "/(dashboards)/user/time-register/page": "app/(dashboards)/user/time-register/page.js",
-  "/(dashboards)/user/my-log/page": "app/(dashboards)/user/my-log/page.js",
-  "/(dashboards)/user/dashboard/page": "app/(dashboards)/user/dashboard/page.js",
-  "/(dashboards)/admin/projects/page": "app/(dashboards)/admin/projects/page.js",
-  "/(dashboards)/admin/users/page": "app/(dashboards)/admin/users/page.js",
-  "/auth/login/page": "app/auth/login/page.js"
+  "/api/projects/route": "app/api/projects/route.js",
+  "/api/users/route": "app/api/users/route.js",
+  "/api/time-logs/all/route": "app/api/time-logs/all/route.js",
+  "/page": "app/page.js",
+  "/(dashboards)/admin/dashboard/page": "app/(dashboards)/admin/dashboard/page.js"
 }
