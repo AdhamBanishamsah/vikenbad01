@@ -1,9 +1,9 @@
 {
-  "/api/users/route": "app/api/users/route.js",
-  "/(dashboards)/admin/projects/page": "app/(dashboards)/admin/projects/page.js",
-  "/(dashboards)/admin/users/page": "app/(dashboards)/admin/users/page.js",
-  "/auth/login/page": "app/auth/login/page.js",
+  "/api/projects/active/route": "app/api/projects/active/route.js",
+  "/api/time-logs/user/route": "app/api/time-logs/user/route.js",
+  "/(dashboards)/user/time-register/page": "app/(dashboards)/user/time-register/page.js",
+  "/(dashboards)/admin/projects/[id]/page": "app/(dashboards)/admin/projects/[id]/page.js",
   "/(dashboards)/user/dashboard/page": "app/(dashboards)/user/dashboard/page.js",
-  "/auth/register/page": "app/auth/register/page.js",
-  "/(dashboards)/user/time-register/page": "app/(dashboards)/user/time-register/page.js"
+  "/(dashboards)/admin/projects/page": "app/(dashboards)/admin/projects/page.js",
+  "/(dashboards)/user/my-log/page": "app/(dashboards)/user/my-log/page.js"
 }
