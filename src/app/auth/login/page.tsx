@@ -3,9 +3,9 @@
 import Link from "next/link"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useState } from "react"
+import { useState, Suspense } from "react"
 
-const LoginPage = () => {
+const LoginContent = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [error, setError] = useState(searchParams.get("error") || "")
@@ -26,7 +26,11 @@ const LoginPage = () => {
       })
 
       if (result?.error) {
-        setError("Invalid email or password")
+        if (result.error.includes('not active')) {
+          setError("حسابك غير نشط حالياً. يرجى الانتظار حتى يتم تفعيله من قبل المسؤول.")
+        } else {
+          setError("البريد الإلكتروني أو كلمة المرور غير صحيحة")
+        }
       } else if (result?.ok) {
         // Get the user role from the email (temporary solution)
         const email = formData.get("email") as string
@@ -42,7 +46,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.error("Login error:", error)
-      setError("An error occurred during sign in")
+      setError("حدث خطأ أثناء تسجيل الدخول")
     } finally {
       setLoading(false)
     }
@@ -107,6 +111,14 @@ const LoginPage = () => {
         </p>
       </div>
     </div>
+  )
+}
+
+const LoginPage = () => {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   )
 }
 

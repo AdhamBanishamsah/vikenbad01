@@ -16,40 +16,30 @@
       "static/chunks/main-app.js",
       "static/chunks/app/api/auth/[...nextauth]/route.js"
     ],
-    "/(dashboards)/user/dashboard/page": [
+    "/(dashboards)/admin/dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(dashboards)/user/dashboard/page.js"
+      "static/chunks/app/(dashboards)/admin/dashboard/page.js"
+    ],
+    "/api/users/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/users/route.js"
+    ],
+    "/(dashboards)/admin/users/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboards)/admin/users/page.js"
     ],
     "/auth/login/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/auth/login/page.js"
     ],
-    "/dashboard/page": [
+    "/(dashboards)/user/dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/page.js"
-    ],
-    "/(dashboards)/admin/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboards)/admin/dashboard/page.js"
-    ],
-    "/(dashboards)/admin/projects/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboards)/admin/projects/page.js"
-    ],
-    "/(dashboards)/admin/projects/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboards)/admin/projects/[id]/page.js"
-    ],
-    "/(dashboards)/admin/users/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboards)/admin/users/page.js"
+      "static/chunks/app/(dashboards)/user/dashboard/page.js"
     ],
     "/(dashboards)/user/time-register/page": [
       "static/chunks/webpack.js",
@@ -61,10 +51,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(dashboards)/user/my-log/page.js"
     ],
-    "/_not-found/page": [
+    "/auth/register/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/chunks/app/auth/register/page.js"
+    ],
+    "/(dashboards)/admin/projects/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboards)/admin/projects/page.js"
     ]
   }
 }
