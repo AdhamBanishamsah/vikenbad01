@@ -3,9 +3,15 @@ import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../auth/[...nextauth]/auth.config'
 
+type Props = {
+  params: {
+    id: string
+  }
+}
+
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: Props
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -16,7 +22,7 @@ export async function GET(
       )
     }
 
-    const projectId = context.params.id
+    const projectId = params.id
 
     // Fetch project with users and time logs
     const project = await prisma.project.findUnique({
