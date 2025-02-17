@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import AdminNavigation from '@/components/AdminNavigation'
 
 type User = {
   id: string
@@ -220,42 +221,7 @@ export default function UsersPage() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Navigation Header */}
-      <header className="fixed left-0 right-0 top-0 z-50 bg-white shadow-md">
-        <div className="mx-auto max-w-7xl px-4 py-4">
-          <div className="flex flex-col space-y-4">
-            {/* Top row with logo and sign out */}
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">Viken Bad</h2>
-              <button
-                onClick={handleSignOut}
-                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-              >
-                تسجيل خروج
-              </button>
-            </div>
-            
-            {/* Bottom row with navigation */}
-            <div className="flex items-center justify-between border-t pt-4">
-              <nav className="flex items-center space-x-6 space-x-reverse">
-                <Link 
-                  href="/admin/users"
-                  className="text-sm font-medium text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                >
-                  إدارة المستخدمين
-                </Link>
-                <Link 
-                  href="/admin/projects"
-                  className="text-sm font-medium text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                >
-                  المشاريع
-                </Link>
-              </nav>
-              <span className="text-sm font-medium text-gray-600">لوحة الإدارة</span>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AdminNavigation />
 
       {/* Main Content */}
       <main className="mx-auto max-w-7xl px-4 pt-32">

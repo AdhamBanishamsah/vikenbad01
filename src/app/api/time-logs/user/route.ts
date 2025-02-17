@@ -23,10 +23,18 @@ export async function GET() {
         date: true,
         hours: true,
         description: true,
+        locked: true,
+        lockedAt: true,
         project: {
           select: {
             id: true,
             title: true
+          }
+        },
+        lockedBy: {
+          select: {
+            id: true,
+            name: true
           }
         }
       },

@@ -10,9 +10,15 @@ type TimeLog = {
   date: string
   hours: number
   description: string | null
+  locked: boolean
+  lockedAt: string | null
   project: {
     id: string
     title: string
+  }
+  lockedBy?: {
+    id: string
+    name: string
   }
 }
 
@@ -34,6 +40,14 @@ export default function MyLogPage() {
   const [dateRange, setDateRange] = useState({
     start: "",
     end: new Date().toISOString().split('T')[0]
+  })
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [selectedLog, setSelectedLog] = useState<TimeLog | null>(null)
+  const [editData, setEditData] = useState({
+    date: "",
+    hours: 0,
+    description: ""
   })
 
   useEffect(() => {
@@ -95,6 +109,85 @@ export default function MyLogPage() {
   })
 
   const totalFilteredHours = filteredLogs.reduce((sum, log) => sum + log.hours, 0)
+
+  const handleEditClick = (log: TimeLog) => {
+    setSelectedLog(log)
+    setEditData({
+      date: log.date,
+      hours: log.hours,
+      description: log.description || ""
+    })
+    setShowEditModal(true)
+  }
+
+  const handleDeleteClick = (log: TimeLog) => {
+    setSelectedLog(log)
+    setShowDeleteModal(true)
+  }
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selectedLog) return
+
+    try {
+      const response = await fetch(`/api/time-logs?id=${selectedLog.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          date: editData.date,
+          hours: Number(editData.hours),
+          description: editData.description || null
+        }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to update time log')
+      }
+
+      // Refresh time logs
+      const timeLogsResponse = await fetch('/api/time-logs/user')
+      if (!timeLogsResponse.ok) throw new Error('Failed to fetch time logs')
+      const timeLogsData = await timeLogsResponse.json()
+      setTimeLogs(timeLogsData)
+
+      setShowEditModal(false)
+      setSelectedLog(null)
+      setEditData({ date: "", hours: 0, description: "" })
+    } catch (error) {
+      console.error('Error updating time log:', error)
+      setError(error instanceof Error ? error.message : 'Failed to update time log')
+    }
+  }
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedLog) return
+
+    try {
+      const response = await fetch(`/api/time-logs?id=${selectedLog.id}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to delete time log')
+      }
+
+      // Refresh time logs
+      const timeLogsResponse = await fetch('/api/time-logs/user')
+      if (!timeLogsResponse.ok) throw new Error('Failed to fetch time logs')
+      const timeLogsData = await timeLogsResponse.json()
+      setTimeLogs(timeLogsData)
+
+      setShowDeleteModal(false)
+      setSelectedLog(null)
+    } catch (error) {
+      console.error('Error deleting time log:', error)
+      setError(error instanceof Error ? error.message : 'Failed to delete time log')
+    }
+  }
 
   if (status === "loading" || loading) {
     return (
@@ -240,6 +333,12 @@ export default function MyLogPage() {
                     <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
                       الوصف
                     </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+                      الحالة
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+                      الإجراءات
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
@@ -247,10 +346,10 @@ export default function MyLogPage() {
                     <tr key={log.id}>
                       <td className="whitespace-nowrap px-6 py-4">
                         <div className="text-sm text-gray-900">
-                          {new Date(log.date).toLocaleDateString('en-US', {
+                          {new Date(log.date).toLocaleDateString('ar', {
                             year: 'numeric',
                             month: 'long',
-                            day: 'numeric',
+                            day: 'numeric'
                           })}
                         </div>
                       </td>
@@ -263,6 +362,34 @@ export default function MyLogPage() {
                       <td className="px-6 py-4">
                         <div className="text-sm text-gray-900">{log.description || '-'}</div>
                       </td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        <span className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
+                          log.locked 
+                            ? 'bg-red-100 text-red-800' 
+                            : 'bg-green-100 text-green-800'
+                        }`}>
+                          {log.locked ? 'مقفل' : 'مفتوح'}
+                        </span>
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
+                        {!log.locked && (
+                          <>
+                            <button
+                              onClick={() => handleEditClick(log)}
+                              className="text-blue-600 hover:text-blue-900"
+                            >
+                              تعديل
+                            </button>
+                            <span className="mx-2 text-gray-300">|</span>
+                            <button
+                              onClick={() => handleDeleteClick(log)}
+                              className="text-red-600 hover:text-red-900"
+                            >
+                              حذف
+                            </button>
+                          </>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -271,6 +398,139 @@ export default function MyLogPage() {
           </div>
         </div>
       </main>
+
+      {/* Edit Modal */}
+      {showEditModal && selectedLog && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+
+            <div className="inline-block transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-right align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6 sm:align-middle">
+              <div className="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
+                <button
+                  onClick={() => setShowEditModal(false)}
+                  className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none"
+                >
+                  <span className="sr-only">إغلاق</span>
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="sm:flex sm:items-start">
+                <div className="mt-3 w-full text-center sm:mt-0 sm:text-right">
+                  <h3 className="text-lg font-medium leading-6 text-gray-900">
+                    تعديل تسجيل الوقت
+                  </h3>
+
+                  <form onSubmit={handleEditSubmit} className="mt-4">
+                    <div className="space-y-4">
+                      <div>
+                        <label htmlFor="edit-date" className="block text-sm font-medium text-gray-700">
+                          التاريخ
+                        </label>
+                        <input
+                          type="date"
+                          id="edit-date"
+                          value={editData.date}
+                          onChange={(e) => setEditData({ ...editData, date: e.target.value })}
+                          required
+                          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="edit-hours" className="block text-sm font-medium text-gray-700">
+                          الساعات
+                        </label>
+                        <input
+                          type="number"
+                          id="edit-hours"
+                          value={editData.hours}
+                          onChange={(e) => setEditData({ ...editData, hours: Number(e.target.value) })}
+                          required
+                          min="0"
+                          step="0.5"
+                          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="edit-description" className="block text-sm font-medium text-gray-700">
+                          الوصف
+                        </label>
+                        <textarea
+                          id="edit-description"
+                          value={editData.description}
+                          onChange={(e) => setEditData({ ...editData, description: e.target.value })}
+                          rows={3}
+                          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mt-5 sm:mt-6">
+                      <button
+                        type="submit"
+                        className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:text-sm"
+                      >
+                        حفظ التغييرات
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && selectedLog && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+
+            <div className="inline-block transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-right align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6 sm:align-middle">
+              <div className="sm:flex sm:items-start">
+                <div className="mt-3 w-full text-center sm:mt-0 sm:text-right">
+                  <h3 className="text-lg font-medium leading-6 text-gray-900">
+                    تأكيد حذف تسجيل الوقت
+                  </h3>
+
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                      هل أنت متأكد من حذف هذا التسجيل؟ لا يمكن التراجع عن هذا الإجراء.
+                    </p>
+                  </div>
+
+                  <div className="mt-5 flex justify-end space-x-3 space-x-reverse">
+                    <button
+                      type="button"
+                      onClick={() => setShowDeleteModal(false)}
+                      className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    >
+                      إلغاء
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleDeleteConfirm}
+                      className="rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                    >
+                      حذف
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 } 
