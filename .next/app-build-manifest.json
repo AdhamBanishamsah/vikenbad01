@@ -90,6 +90,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/time-logs/route.js"
+    ],
+    "/api/time-logs/all/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/time-logs/all/route.js"
     ]
   }
 }
