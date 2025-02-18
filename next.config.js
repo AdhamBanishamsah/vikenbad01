@@ -3,11 +3,12 @@ const nextConfig = {
   swcMinify: true,
   reactStrictMode: true,
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'fonts.gstatic.com', 'fonts.googleapis.com'],
     unoptimized: true
   },
   experimental: {
-    serverActions: true
+    serverActions: true,
+    serverComponentsExternalPackages: ['@prisma/client']
   },
   trailingSlash: true,
 }
