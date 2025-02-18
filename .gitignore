@@ -1,7 +1,44 @@
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Cache and temporary files
+/cache/
+/tmp/
+*.tmp
+*.swp
+*.bak
+
+# Compiled assets
+/public/assets/
+/public/dist/
+*.min.js
+*.min.css
 
 # testing
 /coverage
