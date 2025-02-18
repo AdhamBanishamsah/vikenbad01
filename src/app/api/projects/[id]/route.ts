@@ -3,9 +3,15 @@ import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../auth/[...nextauth]/auth.config'
 
+type RouteSegment = {
+  params: {
+    id: string
+  }
+}
+
 export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  segment: RouteSegment
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -16,7 +22,7 @@ export async function GET(
       )
     }
 
-    const projectId = params.id
+    const projectId = segment.params.id
 
     // Fetch project with users and time logs
     const project = await prisma.project.findUnique({
