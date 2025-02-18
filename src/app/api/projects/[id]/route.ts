@@ -5,7 +5,7 @@ import { authOptions } from '../../auth/[...nextauth]/auth.config'
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -16,7 +16,7 @@ export async function GET(
       )
     }
 
-    const projectId = params.id
+    const projectId = context.params.id
 
     // Fetch project with users and time logs
     const project = await prisma.project.findUnique({
