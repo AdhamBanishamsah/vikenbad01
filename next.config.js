@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  swcMinify: true,
+  reactStrictMode: true,
   images: {
-    unoptimized: true,
+    domains: ['localhost'],
+    unoptimized: true
+  },
+  experimental: {
+    serverActions: true
   },
   trailingSlash: true,
 }
